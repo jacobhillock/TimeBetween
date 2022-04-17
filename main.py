@@ -9,15 +9,19 @@ def calc_between(start: date, end: date, inclusive: bool) -> int:
 
 
 def calc_workdays_between(start: date, end: date, inclusive: bool) -> int:
-    numberDays = 0
-    start, end, sign = (start, end, 1) if start <= end else (end, start, -1)
-    if inclusive:
-        start += timedelta(sign*inclusive)
-    while start < end:
-        if start.weekday() in [0, 1, 2, 3, 4]:
-            numberDays += 1
-        start = start + timedelta(1)
-    numberDays *= sign
+    sign = 1 if start <= end else -1
+    start = start + timedelta(sign*(not inclusive))
+
+    if start.weekday() in [5, 6]:
+        start += timedelta(abs(start.weekday() - 7))
+    if end.weekday() in [5, 6]:
+        end -= timedelta(abs(7 - end.weekday()))
+
+    time_between = end - start
+    weeks = int(time_between.days/7)
+
+    numberDays = weeks * 5 + abs(end.weekday() + (5 - start.weekday())) % 5 + 1
+
     return numberDays
 
 
