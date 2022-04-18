@@ -36,7 +36,7 @@ def parse_args() -> Namespace:
                         action='store_true', help='Don\'t count today in total')
     parser.add_argument('-s', '--setStart', metavar=('MM', 'DD', 'YYYY'), type=int, nargs=3,
                         help='Specify Start')
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.3')
 
     return parser.parse_args()
 
