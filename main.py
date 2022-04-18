@@ -28,14 +28,13 @@ def calc_workdays_between(start: date, end: date, inclusive: bool) -> int:
 def parse_args() -> Namespace:
     parser = ArgumentParser(
         prog='Time Between', description='Calculate the number of days between two dates.')
-    parser.add_argument('-m', type=int, help='End Date Month')
-    parser.add_argument('-d', type=int, help='End Date Day')
-    parser.add_argument('-y', type=int, help='End Date Year')
+    parser.add_argument('-e', '--setEnd', metavar=('MM', 'DD', 'YYYY'), type=int, nargs=3,
+                        help='Specify Start')
     parser.add_argument('-w', '--workdays',
                         action='store_true', help='Only count workdays')
     parser.add_argument('-I', '--notInclusive',
                         action='store_true', help='Don\'t count today in total')
-    parser.add_argument('-S', '--setStart', metavar=('MM', 'DD', 'YYYY'), type=int, nargs=3,
+    parser.add_argument('-s', '--setStart', metavar=('MM', 'DD', 'YYYY'), type=int, nargs=3,
                         help='Specify Start')
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 
@@ -49,14 +48,7 @@ def main():
     if args.setStart:
         start = date(args.setStart[2], args.setStart[0], args.setStart[1])
 
-    if args.d is None:
-        args.d = 1
-    if args.y is None:
-        args.y = start.year
-    if args.m is None:
-        args.m = start.month
-
-    given_date = date(args.y, args.m, args.d)
+    given_date = date(args.setEnd[2], args.setEnd[0], args.setEnd[1])
 
     func = calc_between
     if args.workdays:
