@@ -4,13 +4,13 @@ from argparse import ArgumentParser, Namespace
 
 def calc_between(start: date, end: date, inclusive: bool) -> int:
     sign = 1 if start <= end else -1
-    numberDays = end - start + timedelta(sign*inclusive)
+    numberDays = end - start + timedelta(sign*(not inclusive))
     return numberDays.days
 
 
 def calc_workdays_between(start: date, end: date, inclusive: bool) -> int:
     sign = 1 if start <= end else -1
-    start = start + timedelta(sign*(not inclusive))
+    start = start + timedelta(sign*(inclusive))
 
     if start.weekday() in [5, 6]:
         start += timedelta(abs(start.weekday() - 7))
