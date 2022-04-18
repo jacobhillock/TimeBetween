@@ -36,7 +36,9 @@ def parse_args() -> Namespace:
                         action='store_true', help='Don\'t count today in total')
     parser.add_argument('-s', '--setStart', metavar=('MM', 'DD', 'YYYY'), type=int, nargs=3,
                         help='Specify Start')
-    parser.add_argument('--version', action='version', version='%(prog)s 0.3')
+    parser.add_argument('--ukDate', action='store_true',
+                        help='Use the UK date format (DD MM YYYY)')
+    parser.add_argument('--version', action='version', version='%(prog)s 0.4')
 
     return parser.parse_args()
 
@@ -46,9 +48,17 @@ def main():
 
     start = date.today()
     if args.setStart:
-        start = date(args.setStart[2], args.setStart[0], args.setStart[1])
+        start = date(
+            args.setStart[2],
+            args.setStart[0 + args.ukDate],
+            args.setStart[(1 + args.ukDate) % 2]
+        )
 
-    given_date = date(args.setEnd[2], args.setEnd[0], args.setEnd[1])
+    given_date = date(
+        args.setEnd[2],
+        args.setEnd[0 + args.ukDate],
+        args.setEnd[(1 + args.ukDate) % 2]
+    )
 
     func = calc_between
     if args.workdays:
